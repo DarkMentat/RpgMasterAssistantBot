@@ -7,9 +7,18 @@ group 'org.darkmentat'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+sourceCompatibility = 1.8
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
+compileTestKotlin.kotlinOptions.jvmTarget = "1.8"
+
+jar {
+    manifest.attributes 'Main-Class': 'org.darkmentat.MainKt'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -17,11 +26,4 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     compile "org.telegram:telegrambots:4.1.2"
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
 }
