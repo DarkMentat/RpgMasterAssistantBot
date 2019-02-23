@@ -75,6 +75,16 @@ class RpgMasterAssistantBot : TelegramLongPollingBot() {
                 )
             }
 
+            "/start" -> {
+                println("SEND: welcome")
+
+                execute(
+                    SendMessage()
+                        .setChatId(msg.chatId)
+                        .setText("Welcome!")
+                )
+            }
+
             "/ping" -> {
                 println("SEND: ping pong")
 
