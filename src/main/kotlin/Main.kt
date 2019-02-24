@@ -40,18 +40,12 @@ fun main(args: Array<String>) {
     ApiContextInitializer.init()
 
     val externalUrl = System.getenv("APP_URL")
-    val internalUrl = "https://0.0.0.0:" + if (System.getenv("PORT") != null) System.getenv("PORT") else "33500"
+    val internalUrl = "https://0.0.0.0:" + System.getenv("PORT")
 
     println("external url: $externalUrl")
     println("internal url: $internalUrl")
 
-    val api = TelegramBotsApi(
-        pathToCertificateStore,
-        certificateStorePassword,
-        externalUrl,
-        internalUrl,
-        pathToCertificatePublicKey
-    )
+    val api = TelegramBotsApi(externalUrl, internalUrl)
 
     api.registerBot(RpgMasterAssistantBot())
 }
