@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
     val api = TelegramBotsApi(
         pathToCertificateStore,
         certificateStorePassword,
-        System.getenv("APP_URL")+":80",
+        System.getenv("APP_URL"),
         "https://0.0.0.0:" + if (System.getenv("PORT") != null) System.getenv("PORT") else "33500",
         pathToCertificatePublicKey
     )
