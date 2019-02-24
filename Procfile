@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp build/staging:build/staging/* org.darkmentat.Main
+web: java $JAVA_OPTS -cp build/staging:build/staging/* org.darkmentat.MainKt
