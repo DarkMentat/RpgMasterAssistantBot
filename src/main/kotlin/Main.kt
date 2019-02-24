@@ -12,9 +12,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
 import kotlin.random.Random
-import java.util.logging.ConsoleHandler
 import org.telegram.telegrambots.meta.logging.BotLogger
+import java.util.logging.Handler
 import java.util.logging.Level
+import java.util.logging.LogRecord
 
 
 fun main(args: Array<String>) {
@@ -24,7 +25,17 @@ fun main(args: Array<String>) {
     val certificateStorePassword = "rpg-master-assistant-bot"
 
     BotLogger.setLevel(Level.ALL)
-    BotLogger.registerLogger(ConsoleHandler())
+    BotLogger.registerLogger(object : Handler() {
+        override fun publish(log: LogRecord?) {
+            if(log != null){
+                println(log.message)
+                println(log.toString())
+            }
+        }
+
+        override fun flush() = Unit
+        override fun close() = Unit
+    })
 
     ApiContextInitializer.init()
 
