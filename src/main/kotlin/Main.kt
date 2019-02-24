@@ -12,6 +12,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
 import kotlin.random.Random
+import java.util.logging.ConsoleHandler
+import org.telegram.telegrambots.meta.logging.BotLogger
+import java.util.logging.Level
 
 
 fun main(args: Array<String>) {
@@ -19,6 +22,9 @@ fun main(args: Array<String>) {
     val pathToCertificatePublicKey = "./rpg-master-assistant-bot.pem"
     val pathToCertificateStore = "./rpg-master-assistant-bot.jks"
     val certificateStorePassword = "rpg-master-assistant-bot"
+
+    BotLogger.setLevel(Level.ALL)
+    BotLogger.registerLogger(ConsoleHandler())
 
     ApiContextInitializer.init()
 
