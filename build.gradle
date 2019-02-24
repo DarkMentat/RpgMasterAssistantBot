@@ -16,6 +16,12 @@ jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
+task stage(type: Copy) {
+    from sourceSets.main.runtimeClasspath
+    into 'build/staging'
+}
+
+stage.dependsOn build
 
 repositories {
     jcenter()
