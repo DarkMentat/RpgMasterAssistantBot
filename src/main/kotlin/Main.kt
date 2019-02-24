@@ -26,7 +26,7 @@ fun main(args: Array<String>) {
         pathToCertificateStore,
         certificateStorePassword,
         System.getenv("APP_URL")+":80",
-        "https://127.0.0.1:" + if (System.getenv("PORT") != null) System.getenv("PORT") else "5000",
+        "0.0.0.0:" + if (System.getenv("PORT") != null) System.getenv("PORT") else "33500",
         pathToCertificatePublicKey
     )
 
