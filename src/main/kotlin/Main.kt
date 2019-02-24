@@ -1,13 +1,12 @@
 package org.darkmentat
 
 import org.telegram.telegrambots.ApiContextInitializer
-import org.telegram.telegrambots.bots.TelegramLongPollingBot
+import org.telegram.telegrambots.bots.TelegramWebhookBot
 import org.telegram.telegrambots.meta.TelegramBotsApi
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto
 import org.telegram.telegrambots.meta.api.objects.Update
-import org.telegram.telegrambots.meta.api.objects.media.InputMedia
 import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton
@@ -16,12 +15,28 @@ import kotlin.random.Random
 
 
 fun main(args: Array<String>) {
+
+    val pathToCertificatePublicKey = "./rpg-master-assistant-bot.pem"
+    val pathToCertificateStore = "./rpg-master-assistant-bot.jks"
+    val certificateStorePassword = "rpg-master-assistant-bot"
+
     ApiContextInitializer.init()
-    TelegramBotsApi().registerBot(RpgMasterAssistantBot())
+
+    val api = TelegramBotsApi(
+        pathToCertificateStore,
+        certificateStorePassword,
+        System.getenv("APP_URL")+":80",
+        "https://127.0.0.1:" + if (System.getenv("PORT") != null) System.getenv("PORT") else "5000",
+        pathToCertificatePublicKey
+    )
+
+    api.registerBot(RpgMasterAssistantBot())
 }
 
-class RpgMasterAssistantBot : TelegramLongPollingBot() {
 
+class RpgMasterAssistantBot : TelegramWebhookBot() {
+
+    override fun getBotPath() = System.getenv("BOT_PATH")
     override fun getBotToken() = System.getenv("BOT_TOKEN")
     override fun getBotUsername() = System.getenv("BOT_NAME")
 
@@ -48,10 +63,10 @@ class RpgMasterAssistantBot : TelegramLongPollingBot() {
         }
     )
 
-    override fun onUpdateReceived(update: Update?) {
+    override fun onWebhookUpdateReceived(update: Update?): BotApiMethod<*>? {
 
-        val msg = update?.message ?: return
-        val txt = msg.text ?: return
+        val msg = update?.message ?: return null
+        val txt = msg.text ?: return null
 
         println("RECV: $txt")
 
@@ -64,52 +79,42 @@ class RpgMasterAssistantBot : TelegramLongPollingBot() {
                     keyboard = mainMenuKeyboard
                 }
 
-                execute(
-                    SendMessage()
+                return SendMessage()
                         .setChatId(msg.chatId)
                         .setText("Here is keyboard")
                         .setReplyMarkup(keyboardMarkup)
-                )
             }
 
             "Ping" -> {
                 println("SEND: ping pong")
 
-                execute(
-                    SendMessage()
+                return SendMessage()
                         .setChatId(msg.chatId)
                         .setText("Pong")
-                )
             }
 
             "ping" -> {
                 println("SEND: ping pong")
 
-                execute(
-                    SendMessage()
+                return SendMessage()
                         .setChatId(msg.chatId)
                         .setText("pong")
-                )
             }
 
             "/start" -> {
                 println("SEND: welcome")
 
-                execute(
-                    SendMessage()
+                return SendMessage()
                         .setChatId(msg.chatId)
                         .setText("Welcome!")
-                )
             }
 
             "/ping" -> {
                 println("SEND: ping pong")
 
-                execute(
-                    SendMessage()
+                return SendMessage()
                         .setChatId(msg.chatId)
                         .setText("pong")
-                )
             }
 
             "Tarot 3 cards" -> {
@@ -133,6 +138,8 @@ class RpgMasterAssistantBot : TelegramLongPollingBot() {
                 )
 
                 execute(album.setChatId(msg.chatId))
+
+                return null
             }
 
             "(nothing)" -> {}
@@ -141,12 +148,12 @@ class RpgMasterAssistantBot : TelegramLongPollingBot() {
 
                 println("SEND: echo \"$txt\"")
 
-                execute(
-                    SendMessage()
+                return SendMessage()
                         .setChatId(msg.chatId)
                         .setText(txt)
-                )
             }
         }
+
+        return null
     }
 }
