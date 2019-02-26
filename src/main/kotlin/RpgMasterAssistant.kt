@@ -13,6 +13,7 @@ class RpgMasterAssistant(sender: AbsSender){
     private val pingHandler = PingHandler()
     private val welcomeHandler = WelcomeHandler()
     private val tarotHandler = TarotHandler(sender)
+    private val emogenHandler = EmogenHandler()
 
     fun onUpdate(update: Update?): BotApiMethod<out BotApiObject>? {
 
@@ -32,6 +33,7 @@ class RpgMasterAssistant(sender: AbsSender){
             "Ping" -> pingHandler.process(update)
 
             "Tarot 3 cards" -> tarotHandler.process(update)
+            "Emogen" -> emogenHandler.process(update)
 
             "(nothing)" -> null
 

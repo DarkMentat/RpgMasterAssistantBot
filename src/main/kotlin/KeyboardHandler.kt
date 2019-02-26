@@ -14,7 +14,7 @@ class KeyboardHandler {
     private val mainMenuKeyboard = arrayListOf(
         KeyboardRow().apply {
             add(KeyboardButton("Tarot 3 cards"))
-            add("(nothing)")
+            add("Emogen")
         },
         KeyboardRow().apply {
             add("Ping")
