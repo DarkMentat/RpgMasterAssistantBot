@@ -19,6 +19,10 @@ class KeyboardHandler {
         KeyboardRow().apply {
             add("Ping")
             add("(nothing)")
+        },
+        KeyboardRow().apply {
+            add("Random person photo")
+            add("Random name")
         }
     )
 
