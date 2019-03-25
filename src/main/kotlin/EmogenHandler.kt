@@ -5,8 +5,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 
-
-class EmogenHandler {
+class EmogenHandler: Handler {
 
     private val emotions = mapOf(
         "Гнев" to mapOf(
@@ -66,9 +65,7 @@ class EmogenHandler {
         )
     )
 
-
-
-    fun process(update: Update): BotApiMethod<out BotApiObject>? {
+    override fun processDirect(update: Update): BotApiMethod<out BotApiObject>? {
         println("SEND:  emogen")
 
         val first = emotions.keys.random()

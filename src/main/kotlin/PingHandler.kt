@@ -5,10 +5,9 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 
+class PingHandler:Handler {
 
-class PingHandler {
-
-    fun process(update: Update): BotApiMethod<out BotApiObject>? {
+    override fun processDirect(update: Update): BotApiMethod<out BotApiObject>? {
         println("SEND:  pong")
 
         val pong = if(update.message.text == "Ping") "Pong" else "pong"

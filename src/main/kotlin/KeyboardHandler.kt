@@ -8,8 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
 
-
-class KeyboardHandler {
+class KeyboardHandler: Handler {
 
     private val mainMenuKeyboard = arrayListOf(
         KeyboardRow().apply {
@@ -26,7 +25,7 @@ class KeyboardHandler {
         }
     )
 
-    fun process(update: Update): BotApiMethod<out BotApiObject>? {
+    override fun processDirect(update: Update): BotApiMethod<out BotApiObject>? {
         println("SEND: keyboard")
 
         val keyboardMarkup = ReplyKeyboardMarkup().apply {

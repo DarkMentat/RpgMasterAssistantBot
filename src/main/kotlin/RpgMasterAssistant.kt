@@ -5,7 +5,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
 
-
 class RpgMasterAssistant(sender: AbsSender){
 
     private val echoHandler = EchoHandler()
@@ -17,20 +16,17 @@ class RpgMasterAssistant(sender: AbsSender){
     private val randomPersonPhotoHandler= RandomPersonPhotoHandler(sender)
     private val emogenHandler = EmogenHandler()
 
+    private val handlers = listOf(echoHandler, nameGeneratorHandler, keyboardHandler, pingHandler, welcomeHandler, tarotHandler, randomPersonPhotoHandler, emogenHandler)
+
     fun onUpdate(update: Update?): BotApiMethod<out BotApiObject>? {
         if(update?.hasCallbackQuery() == true){
 
             println("RECV: callback " + update.callbackQuery.data)
 
-            when(update.callbackQuery.data){
-
-                "/random_name" -> nameGeneratorHandler.processCallback(update.callbackQuery)
-                "/random_name_eng" -> nameGeneratorHandler.processCallback(update.callbackQuery)
-                "/random_name_fra" -> nameGeneratorHandler.processCallback(update.callbackQuery)
-                "/random_name_ger" -> nameGeneratorHandler.processCallback(update.callbackQuery)
-                "/random_name_jap" -> nameGeneratorHandler.processCallback(update.callbackQuery)
-                "/random_name_chi" -> nameGeneratorHandler.processCallback(update.callbackQuery)
-                "/random_name_exotic" -> nameGeneratorHandler.processCallback(update.callbackQuery)
+            for (handler in handlers){
+                if(handler.callbackCommands.contains(update.callbackQuery.data)){
+                    handler.processCallback(update.callbackQuery)
+                }
             }
         }
 
@@ -41,27 +37,27 @@ class RpgMasterAssistant(sender: AbsSender){
 
         return when(txt){
 
-            "/start" -> welcomeHandler.process(update)
+            "/start" -> welcomeHandler.processDirect(update)
 
-            "/keyboard" -> keyboardHandler.process(update)
+            "/keyboard" -> keyboardHandler.processDirect(update)
 
-            "/ping" -> pingHandler.process(update)
-            "ping" -> pingHandler.process(update)
-            "Ping" -> pingHandler.process(update)
+            "/ping" -> pingHandler.processDirect(update)
+            "ping" -> pingHandler.processDirect(update)
+            "Ping" -> pingHandler.processDirect(update)
 
-            "Tarot 3 cards" -> tarotHandler.process(update)
+            "Tarot 3 cards" -> tarotHandler.processDirect(update)
 
-            "Random person photo" -> randomPersonPhotoHandler.process(update)
-            "/random_person_photo" -> randomPersonPhotoHandler.process(update)
+            "Random person photo" -> randomPersonPhotoHandler.processDirect(update)
+            "/random_person_photo" -> randomPersonPhotoHandler.processDirect(update)
 
-            "Emogen" -> emogenHandler.process(update)
+            "Emogen" -> emogenHandler.processDirect(update)
 
-            "/random_name" -> nameGeneratorHandler.process(update)
-            "Random name" -> nameGeneratorHandler.process(update)
+            "/random_name" -> nameGeneratorHandler.processDirect(update)
+            "Random name" -> nameGeneratorHandler.processDirect(update)
 
             "(nothing)" -> null
 
-            else -> echoHandler.process(update)
+            else -> echoHandler.processDirect(update)
         }
     }
 }

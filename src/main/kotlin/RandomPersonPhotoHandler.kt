@@ -8,10 +8,9 @@ import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
 import kotlin.random.Random
 
+class RandomPersonPhotoHandler(private val sender: AbsSender): Handler {
 
-class RandomPersonPhotoHandler(private val sender: AbsSender) {
-
-    fun process(update: Update): BotApiMethod<out BotApiObject>? {
+    override fun processDirect(update: Update): BotApiMethod<out BotApiObject>? {
         println("SEND:  random person photo")
 
         val randomPhotoLink = "https://thispersondoesnotexist.com/image?seed="

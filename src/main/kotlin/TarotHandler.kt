@@ -8,8 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto
 import org.telegram.telegrambots.meta.bots.AbsSender
 import kotlin.random.Random
 
-
-class TarotHandler(private val sender: AbsSender) {
+class TarotHandler(private val sender: AbsSender): Handler {
 
     private val tarotImageBaseUrl = "https://ibb.co/"
     private val tarotImages = listOf(
@@ -23,7 +22,7 @@ class TarotHandler(private val sender: AbsSender) {
         "nCTQKpv", "4JrdB5m", "MVbsxV5", "hZ6nKWd", "SXSJcLg", "hYTD41s", "6XSS66B", "rHzwSXR"
     )
 
-    fun process(update: Update): BotApiMethod<out BotApiObject>? {
+    override fun processDirect(update: Update): BotApiMethod<out BotApiObject>? {
         println("SEND: 3 tarot photos")
 
         val album = SendMediaGroup()
