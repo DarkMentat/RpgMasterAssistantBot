@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException
@@ -15,7 +16,10 @@ import java.io.Serializable
 import java.lang.Exception
 import kotlin.random.Random
 
-class NameGeneratorHandler(private val sender: AbsSender): Handler {
+class NameGeneratorHandler(
+    private val sender: AbsSender,
+    private val keyboardMarkup: ReplyKeyboardMarkup
+): Handler {
 
     override val callbackCommands = listOf(
         "/random_name",

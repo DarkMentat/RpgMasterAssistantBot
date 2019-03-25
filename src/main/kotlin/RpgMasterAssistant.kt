@@ -3,20 +3,40 @@ package org.darkmentat
 import org.telegram.telegrambots.meta.api.interfaces.BotApiObject
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.Update
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
 import org.telegram.telegrambots.meta.bots.AbsSender
 
 class RpgMasterAssistant(sender: AbsSender){
 
-    private val echoHandler = EchoHandler()
-    private val nameGeneratorHandler = NameGeneratorHandler(sender)
-    private val keyboardHandler = KeyboardHandler()
-    private val pingHandler = PingHandler()
-    private val welcomeHandler = WelcomeHandler()
-    private val tarotHandler = TarotHandler(sender)
-    private val randomPersonPhotoHandler= RandomPersonPhotoHandler(sender)
-    private val emogenHandler = EmogenHandler()
+    private val mainMenuKeyboard = arrayListOf(
+        KeyboardRow().apply {
+            add(KeyboardButton("Tarot 3 cards"))
+            add("Emogen")
+        },
+        KeyboardRow().apply {
+            add("Ping")
+            add("(nothing)")
+        },
+        KeyboardRow().apply {
+            add("Random name")
+        }
+    )
 
-    private val handlers = listOf(echoHandler, nameGeneratorHandler, keyboardHandler, pingHandler, welcomeHandler, tarotHandler, randomPersonPhotoHandler, emogenHandler)
+    private val keyboardMarkup = ReplyKeyboardMarkup().apply {
+        keyboard = mainMenuKeyboard
+        resizeKeyboard = true
+        oneTimeKeyboard = false
+    }
+
+    private val nameGeneratorHandler = NameGeneratorHandler(sender, keyboardMarkup)
+    private val pingHandler = PingHandler(keyboardMarkup)
+    private val welcomeHandler = WelcomeHandler(keyboardMarkup)
+    private val tarotHandler = TarotHandler(sender, keyboardMarkup)
+    private val emogenHandler = EmogenHandler(keyboardMarkup)
+
+    private val handlers = listOf(nameGeneratorHandler, pingHandler, welcomeHandler, tarotHandler, emogenHandler)
 
     fun onUpdate(update: Update?): BotApiMethod<out BotApiObject>? {
         if(update?.hasCallbackQuery() == true){
@@ -39,25 +59,18 @@ class RpgMasterAssistant(sender: AbsSender){
 
             "/start" -> welcomeHandler.processDirect(update)
 
-            "/keyboard" -> keyboardHandler.processDirect(update)
-
             "/ping" -> pingHandler.processDirect(update)
             "ping" -> pingHandler.processDirect(update)
             "Ping" -> pingHandler.processDirect(update)
 
             "Tarot 3 cards" -> tarotHandler.processDirect(update)
 
-            "Random person photo" -> randomPersonPhotoHandler.processDirect(update)
-            "/random_person_photo" -> randomPersonPhotoHandler.processDirect(update)
-
             "Emogen" -> emogenHandler.processDirect(update)
 
             "/random_name" -> nameGeneratorHandler.processDirect(update)
             "Random name" -> nameGeneratorHandler.processDirect(update)
 
-            "(nothing)" -> null
-
-            else -> echoHandler.processDirect(update)
+            else -> null
         }
     }
 }

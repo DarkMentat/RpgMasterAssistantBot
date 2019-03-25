@@ -5,32 +5,11 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
 
-class KeyboardHandler: Handler {
-
-    private val mainMenuKeyboard = arrayListOf(
-        KeyboardRow().apply {
-            add(KeyboardButton("Tarot 3 cards"))
-            add("Emogen")
-        },
-        KeyboardRow().apply {
-            add("Ping")
-            add("(nothing)")
-        },
-        KeyboardRow().apply {
-            add("Random person photo")
-            add("Random name")
-        }
-    )
+class KeyboardHandler(private val keyboardMarkup: ReplyKeyboardMarkup) : Handler {
 
     override fun processDirect(update: Update): BotApiMethod<out BotApiObject>? {
         println("SEND: keyboard")
-
-        val keyboardMarkup = ReplyKeyboardMarkup().apply {
-            keyboard = mainMenuKeyboard
-        }
 
         return SendMessage()
             .setChatId(update.message.chatId)

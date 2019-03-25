@@ -4,8 +4,9 @@ import org.telegram.telegrambots.meta.api.interfaces.BotApiObject
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
 
-class EmogenHandler: Handler {
+class EmogenHandler(private val keyboardMarkup: ReplyKeyboardMarkup) : Handler {
 
     private val emotions = mapOf(
         "Гнев" to mapOf(
@@ -75,5 +76,6 @@ class EmogenHandler: Handler {
         return SendMessage()
             .setChatId(update.message.chatId)
             .setText("$first -> $second -> $third")
+            .setReplyMarkup(keyboardMarkup)
     }
 }

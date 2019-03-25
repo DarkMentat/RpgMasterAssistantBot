@@ -5,10 +5,14 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
 import org.telegram.telegrambots.meta.bots.AbsSender
 import kotlin.random.Random
 
-class TarotHandler(private val sender: AbsSender): Handler {
+class TarotHandler(
+    private val sender: AbsSender,
+    private val keyboardMarkup: ReplyKeyboardMarkup
+): Handler {
 
     private val tarotImageBaseUrl = "https://ibb.co/"
     private val tarotImages = listOf(
