@@ -75,7 +75,7 @@ class EmogenHandler(private val keyboardMarkup: ReplyKeyboardMarkup) : Handler {
 
         return SendMessage()
             .setChatId(update.message.chatId)
-            .setText("$first -> $second -> $third")
+            .setText("$first → $second → $third")
             .setReplyMarkup(keyboardMarkup)
     }
 }
