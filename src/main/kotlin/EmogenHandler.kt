@@ -1,9 +1,7 @@
 package org.darkmentat
 
 import org.telegram.telegrambots.meta.api.interfaces.BotApiObject
-import org.telegram.telegrambots.meta.api.methods.ActionType
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
-import org.telegram.telegrambots.meta.api.methods.send.SendChatAction
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
@@ -108,14 +106,6 @@ class EmogenHandler(
                     .setMessageId(callbackQuery.message.messageId)
                     .setReplyMarkup(InlineKeyboardMarkup())
             )
-
-            sender.execute(
-                SendChatAction()
-                    .setChatId(callbackQuery.message.chatId)
-                    .setAction(ActionType.TYPING)
-            )
-
-            Thread.sleep(200)
 
             val first = emotions.keys.random()
             val second = emotions.getValue(first).keys.random()
