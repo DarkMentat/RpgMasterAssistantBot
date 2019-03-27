@@ -1,11 +1,16 @@
 package org.darkmentat
 
 import org.telegram.telegrambots.meta.api.interfaces.BotApiObject
+import org.telegram.telegrambots.meta.api.methods.ActionType
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
-import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup
+import org.telegram.telegrambots.meta.api.methods.send.SendChatAction
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 import org.telegram.telegrambots.meta.api.objects.Update
-import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import kotlin.random.Random
 
@@ -13,6 +18,8 @@ class TarotHandler(
     private val sender: AbsSender,
     private val keyboardMarkup: ReplyKeyboardMarkup
 ): Handler {
+
+    override val callbackCommands = listOf("/tarot_get_new")
 
     private val tarotImageBaseUrl = "https://ibb.co/"
     private val tarotImages = listOf(
@@ -26,30 +33,51 @@ class TarotHandler(
         "nCTQKpv", "4JrdB5m", "MVbsxV5", "hZ6nKWd", "SXSJcLg", "hYTD41s", "6XSS66B", "rHzwSXR"
     )
 
+    private val inlineUpdateButton = InlineKeyboardMarkup().apply {
+        keyboard = listOf(
+            listOf(
+                InlineKeyboardButton().setText("\uD83D\uDD01 Get New!").setCallbackData("/tarot_get_new")
+            )
+        )
+    }
+
     override fun processDirect(update: Update): BotApiMethod<out BotApiObject>? {
-        println("SEND: 3 tarot photos")
+        println("SEND: tarot card")
 
-        val album = SendMediaGroup()
-
-        val i1 = Random.nextInt(tarotImages.size)
-        var i2 = Random.nextInt(tarotImages.size)
-        var i3 = Random.nextInt(tarotImages.size)
-
-        while (i1 == i2 || i1 == i3 || i2 == i3){
-            i2 = Random.nextInt(tarotImages.size)
-            i3 = Random.nextInt(tarotImages.size)
-        }
-
-        album.media = listOf(
-            InputMediaPhoto(tarotImageBaseUrl + tarotImages[i1], ""),
-            InputMediaPhoto(tarotImageBaseUrl + tarotImages[i2], ""),
-            InputMediaPhoto(tarotImageBaseUrl + tarotImages[i3], "")
+        sender.execute(SendPhoto()
+            .setPhoto(tarotImageBaseUrl + tarotImages[Random.nextInt(tarotImages.size)])
+            .setChatId(update.message.chatId)
+            .setReplyMarkup(inlineUpdateButton)
         )
 
-        album.setChatId(update.message.chatId)
-
-        sender.execute(album)
-
         return null
+    }
+
+    override fun processCallback(callbackQuery: CallbackQuery) {
+        if(callbackQuery.data == "/tarot_get_new") {
+
+            sender.execute(
+                EditMessageReplyMarkup()
+                    .setChatId(callbackQuery.message.chatId)
+                    .setMessageId(callbackQuery.message.messageId)
+                    .setReplyMarkup(InlineKeyboardMarkup())
+            )
+
+            sender.execute(
+                SendChatAction()
+                    .setChatId(callbackQuery.message.chatId)
+                    .setAction(ActionType.TYPING)
+            )
+
+            Thread.sleep(200)
+
+            sender.execute(
+                SendPhoto()
+                    .setChatId(callbackQuery.message.chatId)
+                    .setPhoto(tarotImageBaseUrl + tarotImages[Random.nextInt(tarotImages.size)])
+                    .setChatId(callbackQuery.message.chatId)
+                    .setReplyMarkup(inlineUpdateButton)
+            )
+        }
     }
 }

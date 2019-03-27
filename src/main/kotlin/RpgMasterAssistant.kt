@@ -12,7 +12,7 @@ class RpgMasterAssistant(sender: AbsSender){
 
     private val mainMenuKeyboard = arrayListOf(
         KeyboardRow().apply {
-            add(KeyboardButton("Tarot 3 cards"))
+            add(KeyboardButton("Get Tarot Card"))
             add("Emogen")
         },
         KeyboardRow().apply {
@@ -34,7 +34,7 @@ class RpgMasterAssistant(sender: AbsSender){
     private val pingHandler = PingHandler(keyboardMarkup)
     private val welcomeHandler = WelcomeHandler(keyboardMarkup)
     private val tarotHandler = TarotHandler(sender, keyboardMarkup)
-    private val emogenHandler = EmogenHandler(keyboardMarkup)
+    private val emogenHandler = EmogenHandler(sender, keyboardMarkup)
 
     private val handlers = listOf(nameGeneratorHandler, pingHandler, welcomeHandler, tarotHandler, emogenHandler)
 
@@ -63,7 +63,8 @@ class RpgMasterAssistant(sender: AbsSender){
             "ping" -> pingHandler.processDirect(update)
             "Ping" -> pingHandler.processDirect(update)
 
-            "Tarot 3 cards" -> tarotHandler.processDirect(update)
+            "Get Tarot Card" -> tarotHandler.processDirect(update)
+            "/tarot" -> tarotHandler.processDirect(update)
 
             "Emogen" -> emogenHandler.processDirect(update)
 

@@ -1,7 +1,9 @@
 package org.darkmentat
 
 import org.telegram.telegrambots.meta.api.interfaces.BotApiObject
+import org.telegram.telegrambots.meta.api.methods.ActionType
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
+import org.telegram.telegrambots.meta.api.methods.send.SendChatAction
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
@@ -10,10 +12,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
-import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException
-import org.telegram.telegrambots.meta.updateshandlers.SentCallback
-import java.io.Serializable
-import java.lang.Exception
 import kotlin.random.Random
 
 class NameGeneratorHandler(
@@ -195,6 +193,20 @@ class NameGeneratorHandler(
         "Duong Saley", "Dith Chantrea", "Neak Visna", "Lorn Darareaksmey", "Ma Ary", "Chhit Dara"
     )
 
+    private val inlineReplyKeyboard = InlineKeyboardMarkup().apply {
+        keyboard = listOf(
+            listOf(
+                InlineKeyboardButton().setText("\uD83D\uDD01").setCallbackData("/random_name"),
+                InlineKeyboardButton().setText("\uD83C\uDDEC\uD83C\uDDE7").setCallbackData("/random_name_eng"),
+                InlineKeyboardButton().setText("\uD83C\uDDEB\uD83C\uDDF7").setCallbackData("/random_name_fra"),
+                InlineKeyboardButton().setText("\uD83C\uDDE9\uD83C\uDDEA").setCallbackData("/random_name_ger"),
+                InlineKeyboardButton().setText("\uD83C\uDDEF\uD83C\uDDF5").setCallbackData("/random_name_jap"),
+                InlineKeyboardButton().setText("\uD83C\uDDE8\uD83C\uDDF3").setCallbackData("/random_name_chi"),
+                InlineKeyboardButton().setText("\uD83D\uDDFB").setCallbackData("/random_name_exotic")
+            )
+        )
+    }
+
     override fun processDirect(update: Update): BotApiMethod<out BotApiObject>? {
         println("SEND:  generate name")
 
@@ -218,19 +230,7 @@ class NameGeneratorHandler(
         return SendMessage()
             .setChatId(update.message.chatId)
             .setText(name)
-            .setReplyMarkup(InlineKeyboardMarkup().apply {
-                keyboard = listOf(
-                    listOf(
-                        InlineKeyboardButton().setText("\uD83D\uDD01").setCallbackData("/random_name"),
-                        InlineKeyboardButton().setText("\uD83C\uDDEC\uD83C\uDDE7").setCallbackData("/random_name_eng"),
-                        InlineKeyboardButton().setText("\uD83C\uDDEB\uD83C\uDDF7").setCallbackData("/random_name_fra"),
-                        InlineKeyboardButton().setText("\uD83C\uDDE9\uD83C\uDDEA").setCallbackData("/random_name_ger"),
-                        InlineKeyboardButton().setText("\uD83C\uDDEF\uD83C\uDDF5").setCallbackData("/random_name_jap"),
-                        InlineKeyboardButton().setText("\uD83C\uDDE8\uD83C\uDDF3").setCallbackData("/random_name_chi"),
-                        InlineKeyboardButton().setText("\uD83D\uDDFB").setCallbackData("/random_name_exotic")
-                    )
-                )
-            })
+            .setReplyMarkup(inlineReplyKeyboard)
     }
 
     private fun randomName(): String{
@@ -267,36 +267,27 @@ class NameGeneratorHandler(
             else -> return
         }
 
-        sender.executeAsync(
+        sender.execute(
             EditMessageText()
                 .setChatId(callbackQuery.message.chatId)
                 .setMessageId(callbackQuery.message.messageId)
                 .setText(callbackQuery.message.text)
-                .setReplyMarkup(InlineKeyboardMarkup().apply { keyboard = emptyList() }),
-            object: SentCallback<Serializable> {
-                override fun onResult(method: BotApiMethod<Serializable>?, response: Serializable?) = Unit
-                override fun onException(method: BotApiMethod<Serializable>?, exception: Exception?) = Unit
-                override fun onError(method: BotApiMethod<Serializable>?, apiException: TelegramApiRequestException?) = Unit
-            }
+                .setReplyMarkup(InlineKeyboardMarkup())
         )
+
+        sender.execute(
+            SendChatAction()
+                .setChatId(callbackQuery.message.chatId)
+                .setAction(ActionType.TYPING)
+        )
+
+        Thread.sleep(200)
 
         sender.execute(
             SendMessage()
                 .setChatId(callbackQuery.message.chatId)
                 .setText(name)
-                .setReplyMarkup(InlineKeyboardMarkup().apply {
-                    keyboard = listOf(
-                        listOf(
-                            InlineKeyboardButton().setText("\uD83D\uDD01").setCallbackData("/random_name"),
-                            InlineKeyboardButton().setText("\uD83C\uDDEC\uD83C\uDDE7").setCallbackData("/random_name_eng"),
-                            InlineKeyboardButton().setText("\uD83C\uDDEB\uD83C\uDDF7").setCallbackData("/random_name_fra"),
-                            InlineKeyboardButton().setText("\uD83C\uDDE9\uD83C\uDDEA").setCallbackData("/random_name_ger"),
-                            InlineKeyboardButton().setText("\uD83C\uDDEF\uD83C\uDDF5").setCallbackData("/random_name_jap"),
-                            InlineKeyboardButton().setText("\uD83C\uDDE8\uD83C\uDDF3").setCallbackData("/random_name_chi"),
-                            InlineKeyboardButton().setText("\uD83D\uDDFB").setCallbackData("/random_name_exotic")
-                        )
-                    )
-                })
+                .setReplyMarkup(inlineReplyKeyboard)
         )
     }
 }
