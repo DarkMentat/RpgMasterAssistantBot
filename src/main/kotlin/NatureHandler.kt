@@ -44,7 +44,7 @@ class NatureHandler(
     }
 
     override fun processDirect(update: Update): BotApiMethod<out BotApiObject>? {
-        println("SEND:  emogen")
+        println("SEND:  nature")
 
         val nature = natures.random()
         val demeanor = natures.random()

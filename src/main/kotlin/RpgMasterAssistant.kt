@@ -16,7 +16,7 @@ class RpgMasterAssistant(sender: AbsSender){
             add("Emogen")
         },
         KeyboardRow().apply {
-            add("Picture")
+            add("Appearance")
             add("Nature/Demeanor")
         },
         KeyboardRow().apply {
@@ -38,8 +38,9 @@ class RpgMasterAssistant(sender: AbsSender){
     private val natureHandler = NatureHandler(sender, keyboardMarkup)
     private val keyboardHandler = KeyboardHandler(keyboardMarkup)
     private val animeCharHandler = AnimeCharHandler(sender, keyboardMarkup)
+    private val appearanceHandler = AppearanceHandler(sender, keyboardMarkup)
 
-    private val handlers = listOf(nameGeneratorHandler, pingHandler, welcomeHandler, tarotHandler, emogenHandler, natureHandler, keyboardHandler, animeCharHandler)
+    private val handlers = listOf(nameGeneratorHandler, pingHandler, welcomeHandler, tarotHandler, emogenHandler, natureHandler, keyboardHandler, animeCharHandler, appearanceHandler)
 
     fun onUpdate(update: Update?): BotApiMethod<out BotApiObject>? {
         if(update?.hasCallbackQuery() == true){
@@ -81,7 +82,9 @@ class RpgMasterAssistant(sender: AbsSender){
             "/keyboard" -> keyboardHandler.processDirect(update)
 
             "/anime_char" -> animeCharHandler.processDirect(update)
-            "Picture" -> animeCharHandler.processDirect(update)
+
+            "Appearance" -> appearanceHandler.processDirect(update)
+            "/appearance" -> appearanceHandler.processDirect(update)
 
             else -> null
         }
