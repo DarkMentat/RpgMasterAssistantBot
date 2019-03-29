@@ -20,7 +20,7 @@ class AnimeCharHandler(
 
     override val callbackCommands = listOf("/anime_char_get_new")
 
-    private val myanimelistUrl = "https://myanimelist.net/character/"
+    private val myanimelistUrl = "https://nyaa.shikimori.org/system/characters/original/"
 
     private val inlineUpdateButton = InlineKeyboardMarkup().apply {
         keyboard = listOf(
@@ -37,12 +37,12 @@ class AnimeCharHandler(
             try {
                 sender.execute(
                     SendPhoto()
-                        .setPhoto(myanimelistUrl + Random.nextInt(1, 100000))
+                        .setPhoto(myanimelistUrl + Random.nextInt(1, 100000) + ".jpg")
                         .setChatId(update.message.chatId)
                         .setReplyMarkup(inlineUpdateButton)
                 )
+                break
             }catch (ex: TelegramApiRequestException){}
-            break
         }
 
         return null
@@ -62,12 +62,12 @@ class AnimeCharHandler(
                 try {
                     sender.execute(
                         SendPhoto()
+                            .setPhoto(myanimelistUrl + Random.nextInt(1, 100000) + ".jpg")
                             .setChatId(callbackQuery.message.chatId)
-                            .setPhoto(myanimelistUrl + Random.nextInt(1, 100000))
                             .setReplyMarkup(inlineUpdateButton)
                     )
+                    break
                 }catch (ex: TelegramApiRequestException){}
-                break
             }
         }
     }
