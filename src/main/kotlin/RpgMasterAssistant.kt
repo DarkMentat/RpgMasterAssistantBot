@@ -79,7 +79,9 @@ class RpgMasterAssistant(sender: AbsSender){
             "Random name" -> nameGeneratorHandler.processDirect(update)
 
             "/keyboard" -> keyboardHandler.processDirect(update)
+
             "/anime_char" -> animeCharHandler.processDirect(update)
+            "Picture" -> animeCharHandler.processDirect(update)
 
             else -> null
         }
