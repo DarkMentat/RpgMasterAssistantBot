@@ -52,6 +52,25 @@ class NatureHandler(
         "Не найти желаемого", "Столкнуться с чем-то ужасным", "Не справиться с делом", "Что кто-то узнает правду", "Умереть"
     )
 
+    private val tempers = listOf(
+        //Характер из генераторов Грани Вселенной
+        "Прямой", "Неискренний", "Весёлый", "Скептичный", "Упрямый", "Хитрый", "Любопытный", "Располагающий", "Смелый", "Задумчивый", "Наивный", "Холодный",
+        "Мягкий", "Угрюмый", "Разговорчивый", "Ленивый", "Умиротворённый", "Прозорливый", "Трусливый", "Вызывающий", "Небрежный", "Склочный", "Мечтательный",
+        "Переменчивый", "Отзывчивый", "Тщеславный", "Жестокий", "Расчётливый", "Отталкивающий", "Лихой", "Рассеянный", "Надменный", "Наглый", "Неадекватный",
+        "Скрытный", "Завистливый"
+    )
+
+    private val manners = listOf(
+        "Постоянно матерится", "Вежливый и корректный", "Необщительный, замкнутый", "Говорит без остановки", "Что-то жует", "Плюется",
+        "Курит как паровоз", "Чешется", "Избегает смотреть в глаза", "Говорит короткими предложениями", "Странный акцент ", "Все записывает в книжечку",
+        "Теребит четки или еще что-то подобное", "Слегка дрожит", "Избегает прямых формулировок", "Желчный, всех оскорбляет", "Флегматичный", "Вспыльчивый",
+        "Шутит по поводу и без", "Лишен чувства юмора",
+
+        //Поведение из генераторов Грани Вселенной
+        "Неуверенная речь", "Грубая речь", "Очень вежливая речь", "Невнятная речь / плохая дикция", "Заикание", "Кашель", "Слова-паразиты", "Размашистые жесты",
+        "Постоянно параллельно чем-то занят", "Забывчивость или невнимательность", "Импульсивность, перепады настроения", "Не улыбается / всегда улыбается"
+    )
+
     private val inlineUpdateButton = InlineKeyboardMarkup().apply {
         keyboard = listOf(
             listOf(
@@ -66,11 +85,12 @@ class NatureHandler(
         val nature = natures.random()
         val demeanor = natures.random()
         val motive = motives.random()
+        val manners = manners.random()
         val fear = fears.random()
 
         return SendMessage()
             .setChatId(update.message.chatId)
-            .setText("Натура: $nature\nМаска: $demeanor\nМотив: $motive\nБоится: $fear")
+            .setText("Натура: $nature\nМаска: $demeanor\nПовадки: $manners\nМотив: $motive\nБоится: $fear")
             .setReplyMarkup(inlineUpdateButton)
     }
 
@@ -87,12 +107,13 @@ class NatureHandler(
             val nature = natures.random()
             val demeanor = natures.random()
             val motive = motives.random()
+            val manners = manners.random()
             val fear = fears.random()
 
             sender.execute(
                 SendMessage()
                     .setChatId(callbackQuery.message.chatId)
-                    .setText("Натура: $nature\nМаска: $demeanor\nМотив: $motive\nБоится: $fear")
+                    .setText("Натура: $nature\nМаска: $demeanor\nПовадки: $manners\nМотив: $motive\nБоится: $fear")
                     .setReplyMarkup(inlineUpdateButton)
             )
         }
