@@ -69,6 +69,7 @@ class RpgMasterAssistant(sender: AbsSender){
 
             "Get Tarot Card" -> tarotHandler.processDirect(update)
             "/tarot" -> tarotHandler.processDirect(update)
+            "/tarot_get_pair" -> tarotHandler.processDirect(update)
 
             "Emogen" -> emogenHandler.processDirect(update)
             "/emogen" -> emogenHandler.processDirect(update)
