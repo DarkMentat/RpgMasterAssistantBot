@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
+import java.time.ZonedDateTime
 import kotlin.random.Random
 
 class TarotHandler(
@@ -132,13 +133,15 @@ class TarotHandler(
         )
     }
 
+    private val random = Random(ZonedDateTime.now().toInstant().toEpochMilli())
+
     override fun processDirect(update: Update): BotApiMethod<out BotApiObject>? {
         println("SEND: tarot card")
 
         if(update.message.text == "/tarot_get_pair"){
             val album = SendMediaGroup()
 
-            val index = Random.nextInt(0, tarotImagesRaider.size)
+            val index = random.nextInt(0, tarotImagesRaider.size)
 
             album.media = listOf(
                 InputMediaPhoto(tarotImageBaseUrl + tarotImagesRaider[index], ""),
@@ -153,7 +156,7 @@ class TarotHandler(
 
 
         sender.execute(SendPhoto()
-            .setPhoto(tarotImageBaseUrl + tarotImagesNewVision[Random.nextInt(tarotImagesNewVision.size)])
+            .setPhoto(tarotImageBaseUrl + tarotImagesNewVision[random.nextInt(tarotImagesNewVision.size)])
             .setChatId(update.message.chatId)
             .setReplyMarkup(inlineUpdateButton)
         )
@@ -174,7 +177,7 @@ class TarotHandler(
             sender.execute(
                 SendPhoto()
                     .setChatId(callbackQuery.message.chatId)
-                    .setPhoto(tarotImageBaseUrl + tarotImagesNewVision[Random.nextInt(tarotImagesNewVision.size)])
+                    .setPhoto(tarotImageBaseUrl + tarotImagesNewVision[random.nextInt(tarotImagesNewVision.size)])
                     .setChatId(callbackQuery.message.chatId)
                     .setReplyMarkup(inlineUpdateButton)
             )
@@ -190,7 +193,7 @@ class TarotHandler(
             sender.execute(
                 SendPhoto()
                     .setChatId(callbackQuery.message.chatId)
-                    .setPhoto(tarotImageBaseUrl + tarotImagesWitches[Random.nextInt(tarotImagesWitches.size)])
+                    .setPhoto(tarotImageBaseUrl + tarotImagesWitches[random.nextInt(tarotImagesWitches.size)])
                     .setChatId(callbackQuery.message.chatId)
                     .setReplyMarkup(inlineUpdateButton)
             )
