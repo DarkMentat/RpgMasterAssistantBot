@@ -39,8 +39,9 @@ class RpgMasterAssistant(sender: AbsSender){
     private val keyboardHandler = KeyboardHandler(keyboardMarkup)
     private val animeCharHandler = AnimeCharHandler(sender, keyboardMarkup)
     private val appearanceHandler = AppearanceHandler(sender, keyboardMarkup)
+    private val lotfpSummonHandler = LotfpSummonHandler(sender)
 
-    private val handlers = listOf(nameGeneratorHandler, pingHandler, welcomeHandler, tarotHandler, emogenHandler, natureHandler, keyboardHandler, animeCharHandler, appearanceHandler)
+    private val handlers = listOf(nameGeneratorHandler, pingHandler, welcomeHandler, tarotHandler, emogenHandler, natureHandler, keyboardHandler, animeCharHandler, appearanceHandler, lotfpSummonHandler)
 
     fun onUpdate(update: Update?): BotApiMethod<out BotApiObject>? {
         if(update?.hasCallbackQuery() == true){
@@ -58,6 +59,10 @@ class RpgMasterAssistant(sender: AbsSender){
         val txt = msg.text ?: return null
 
         println("RECV: $txt")
+
+        if(txt.startsWith("/summon_12_hd") || txt.startsWith("/summon_20_hd")){
+            return lotfpSummonHandler.processDirect(update)
+        }
 
         return when(txt){
 
