@@ -40,8 +40,9 @@ class RpgMasterAssistant(sender: AbsSender){
     private val animeCharHandler = AnimeCharHandler(sender, keyboardMarkup)
     private val appearanceHandler = AppearanceHandler(sender, keyboardMarkup)
     private val lotfpSummonHandler = LotfpSummonHandler(sender)
+    private val augmentedRealityCyberpunkCityHandler = AugmentedRealityCyberpunkCityHandler(sender)
 
-    private val handlers = listOf(nameGeneratorHandler, pingHandler, welcomeHandler, tarotHandler, emogenHandler, natureHandler, keyboardHandler, animeCharHandler, appearanceHandler, lotfpSummonHandler)
+    private val handlers = listOf(nameGeneratorHandler, pingHandler, welcomeHandler, tarotHandler, emogenHandler, natureHandler, keyboardHandler, animeCharHandler, appearanceHandler, lotfpSummonHandler, augmentedRealityCyberpunkCityHandler)
 
     fun onUpdate(update: Update?): BotApiMethod<out BotApiObject>? {
         if(update?.hasCallbackQuery() == true){
@@ -91,6 +92,8 @@ class RpgMasterAssistant(sender: AbsSender){
 
             "Appearance" -> appearanceHandler.processDirect(update)
             "/appearance" -> appearanceHandler.processDirect(update)
+
+            "/ar_downtown" -> augmentedRealityCyberpunkCityHandler.processDirect(update)
 
             else -> null
         }
