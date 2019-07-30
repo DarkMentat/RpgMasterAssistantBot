@@ -9,25 +9,56 @@ typealias EmogenMap = HashMap<String, HashMap<String, ArrayList<String>>>
 
 object Resources{
 
+    val loader: ClassLoader = this::class.java.classLoader
+
     object Appearances {
-        val genders = this::class.java.classLoader.getResource("appearance_gender.txt").parseToList()
-        val faces = this::class.java.classLoader.getResource("appearance_faces.txt").parseToList()
-        val eyes = this::class.java.classLoader.getResource("appearance_eyes.txt").parseToList()
-        val hair1 = this::class.java.classLoader.getResource("appearance_hair1.txt").parseToList()
-        val hair2 = this::class.java.classLoader.getResource("appearance_hair2.txt").parseToList()
-        val bodies = this::class.java.classLoader.getResource("appearance_bodies.txt").parseToList()
-        val clothes = this::class.java.classLoader.getResource("appearance_clothes.txt").parseToList()
+        val genders = loader.getResource("appearance_gender.txt").parseToList()
+        val faces = loader.getResource("appearance_faces.txt").parseToList()
+        val eyes = loader.getResource("appearance_eyes.txt").parseToList()
+        val hair1 = loader.getResource("appearance_hair1.txt").parseToList()
+        val hair2 = loader.getResource("appearance_hair2.txt").parseToList()
+        val bodies = loader.getResource("appearance_bodies.txt").parseToList()
+        val clothes = loader.getResource("appearance_clothes.txt").parseToList()
     }
 
     object Cyberpunk {
-        val buildingFeatures = this::class.java.classLoader.getResource("cyberpunk_building_features.txt").parseToList()
-        val downtown = this::class.java.classLoader.getResource("cyberpunk_downtown.txt").parseToList()
-        val smells = this::class.java.classLoader.getResource("cyberpunk_smells.txt").parseToList()
-        val sounds = this::class.java.classLoader.getResource("cyberpunk_sounds.txt").parseToList()
+        val buildingFeatures = loader.getResource("cyberpunk_building_features.txt").parseToList()
+        val downtown = loader.getResource("cyberpunk_downtown.txt").parseToList()
+        val smells = loader.getResource("cyberpunk_smells.txt").parseToList()
+        val sounds = loader.getResource("cyberpunk_sounds.txt").parseToList()
     }
 
     object Emogen {
-        val emotions = this::class.java.classLoader.getResource("emogen_emotions.json").parseJson<EmogenMap>()
+        val emotions = loader.getResource("emogen_emotions.json").parseJson<EmogenMap>()
+    }
+
+    object Natures {
+        val natures = loader.getResource("nature_natures.txt").parseToList()
+        val motives = loader.getResource("nature_motives.txt").parseToList()
+        val manners = loader.getResource("nature_manners.txt").parseToList()
+        val fears = loader.getResource("nature_fears.txt").parseToList()
+    }
+
+    object Tarot {
+        val imagesRaider = loader.getResource("tarot_images_raider.txt").parseToList()
+        val imagesNewVision = loader.getResource("tarot_images_new_vision.txt").parseToList()
+        val imagesWitches = loader.getResource("tarot_images_witches.txt").parseToList()
+    }
+
+    object Names {
+        val englishMale = loader.getResource("names_english_male.txt").parseToList()
+        val englishFem = loader.getResource("names_english_fem.txt").parseToList()
+        val frenchMale = loader.getResource("names_french_male.txt").parseToList()
+        val frenchFem = loader.getResource("names_french_fem.txt").parseToList()
+        val germanMale = loader.getResource("names_german_male.txt").parseToList()
+        val germanFem = loader.getResource("names_german_fem.txt").parseToList()
+        val exoticMale = loader.getResource("names_exotic_male.txt").parseToList()
+        val exoticFem = loader.getResource("names_exotic_fem.txt").parseToList()
+        val japaneseMale = loader.getResource("names_japanese_male.txt").parseToList()
+        val japaneseFem = loader.getResource("names_japanese_fem.txt").parseToList()
+        val chineseMale = loader.getResource("names_chinese_male.txt").parseToList()
+        val chineseFem = loader.getResource("names_chinese_fem.txt").parseToList()
+        val nicknames = loader.getResource("names_nicknames.txt").parseToList()
     }
 
 
