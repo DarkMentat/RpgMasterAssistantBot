@@ -1,16 +1,12 @@
-package org.darkmentat
+package org.darkmentat.handlers
 
-import org.telegram.telegrambots.meta.api.interfaces.BotApiObject
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
-import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
 import java.time.ZonedDateTime
 import kotlin.random.Random
 
-class LotfpSummonHandler(
-    private val sender: AbsSender
-): Handler {
+
+class LotfpSummonHandler(sender: AbsSender) : Handler(sender, "/lotfp_summon") {
 
     private val random = Random(ZonedDateTime.now().toInstant().toEpochMilli())
 
@@ -126,15 +122,13 @@ class LotfpSummonHandler(
         "Паутина (по желанию, только одна активна)"
     )
 
-    override fun processDirect(update: Update): BotApiMethod<out BotApiObject>? {
+    override fun process(msg: String) {
         println("SEND: lotfp summon")
 
-        val msg = update.message?.text?:return null
+        if(msg.length < 18) return
 
-        if(msg.length < 14) return null
-
-        val formaDice = msg.substring(8, 10).toIntOrNull() ?: return null
-        val hitDice = msg.substring(13, msg.length).toIntOrNull() ?: return null
+        val formaDice = msg.substring(14, 16).toIntOrNull() ?: return
+        val hitDice = msg.substring(17, msg.length).toIntOrNull() ?: return
         val baseDiceSize = when(hitDice){
             0 -> 2
             1 -> 4
@@ -201,16 +195,18 @@ class LotfpSummonHandler(
                 else -> "Страх чернеющей планеты"
             }
 
-            else -> return null
+            else -> return
         }
 
         var oddmentsText = ""
         var featuresText = ""
 
         if(formaRandomIndex == 20){
-            return SendMessage()
-                .setChatId(update.message.chatId)
-                .setText(forma)
+            sender.execute(
+                SendMessage()
+                    .setChatId(chatId)
+                    .setText(forma)
+            )
         }else{
             val baseNum = random.nextInt(1, baseDiceSize+1)
 
@@ -238,9 +234,11 @@ class LotfpSummonHandler(
                 featuresText += "\n"
             }
 
-            return SendMessage()
-                .setChatId(update.message.chatId)
-                .setText("$startStats\n$forma\n$oddmentsText\n$featuresText")
+            sender.execute(
+                SendMessage()
+                    .setChatId(chatId)
+                    .setText("$startStats\n$forma\n$oddmentsText\n$featuresText")
+            )
         }
     }
 }
