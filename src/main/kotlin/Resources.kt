@@ -43,6 +43,7 @@ object Resources{
         val imagesRaider = loader.getResource("tarot_images_raider.txt").parseToList()
         val imagesNewVision = loader.getResource("tarot_images_new_vision.txt").parseToList()
         val imagesWitches = loader.getResource("tarot_images_witches.txt").parseToList()
+        val imagesRitualAbuse = loader.getResource("tarot_images_ritual_abuse.txt").parseToList()
     }
 
     object Names {

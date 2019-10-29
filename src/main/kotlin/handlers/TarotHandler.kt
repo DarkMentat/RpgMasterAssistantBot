@@ -2,6 +2,7 @@ package org.darkmentat.handlers
 
 import org.darkmentat.Resources.Tarot.imagesNewVision
 import org.darkmentat.Resources.Tarot.imagesRaider
+import org.darkmentat.Resources.Tarot.imagesRitualAbuse
 import org.darkmentat.Resources.Tarot.imagesWitches
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto
@@ -20,8 +21,9 @@ class TarotHandler(sender: AbsSender) : Handler(sender, "/tarot") {
     private val inlineUpdateButton = InlineKeyboardMarkup().apply {
         keyboard = listOf(
             listOf(
-                InlineKeyboardButton().setText("\uD83D\uDD01 Get New!").setCallbackData("/tarot_get_new"),
-                InlineKeyboardButton().setText("\uD83E\uDDD9\u200D♀ Witch!").setCallbackData("/tarot_get_new_witch")
+                InlineKeyboardButton().setText("\uD83D\uDD01 New!").setCallbackData("/tarot_get_new"),
+                InlineKeyboardButton().setText("\uD83E\uDDD9\u200D♀ Witch!").setCallbackData("/tarot_get_new_witch"),
+                InlineKeyboardButton().setText("\uD83D\uDC80 Abuse!").setCallbackData("/tarot_get_ritual_abuse")
             )
         )
     }
@@ -46,11 +48,29 @@ class TarotHandler(sender: AbsSender) : Handler(sender, "/tarot") {
                 sender.execute(album)
             }
 
+            "/tarot_get_classic" -> {
+                sender.execute(
+                    SendPhoto()
+                        .setChatId(chatId)
+                        .setPhoto(tarotImageBaseUrl + imagesRaider[random.nextInt(imagesRaider.size)])
+                        .setReplyMarkup(inlineUpdateButton)
+                )
+            }
+
             "/tarot_get_new_witch" -> {
                 sender.execute(
                     SendPhoto()
                         .setChatId(chatId)
                         .setPhoto(tarotImageBaseUrl + imagesWitches[random.nextInt(imagesWitches.size)])
+                        .setReplyMarkup(inlineUpdateButton)
+                )
+            }
+
+            "/tarot_get_ritual_abuse" -> {
+                sender.execute(
+                    SendPhoto()
+                        .setChatId(chatId)
+                        .setPhoto(tarotImageBaseUrl + imagesRitualAbuse[random.nextInt(imagesRitualAbuse.size)])
                         .setReplyMarkup(inlineUpdateButton)
                 )
             }
