@@ -22,10 +22,10 @@ class AugmentedRealityCyberpunkCityHandler(sender: AbsSender) : Handler(sender, 
                    "Smells like ${smells.random()} and ${smells.random()}, Sound ${sounds.random()} and ${sounds.random()}"
 
         sender.execute(
-            SendMessage()
-                .setChatId(chatId)
-                .setText(res)
-                .enableMarkdown(true)
+            SendMessage.builder()
+                .chatId(chatId.toString())
+                .text(res)
+                .build().apply { enableMarkdown(true) }
         )
     }
 }

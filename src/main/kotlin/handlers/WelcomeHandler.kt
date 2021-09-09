@@ -10,9 +10,10 @@ class WelcomeHandler(sender: AbsSender) : Handler(sender, "/welcome") {
 
         //todo keyboard?
         sender.execute(
-            SendMessage()
-                .setChatId(chatId)
-                .setText("Welcome!")
+            SendMessage.builder()
+                .chatId(chatId.toString())
+                .text("Welcome!")
+                .build()
         )
     }
 }

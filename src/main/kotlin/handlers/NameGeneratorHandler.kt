@@ -25,14 +25,14 @@ class NameGeneratorHandler(sender: AbsSender) : Handler(sender, "/random_name") 
     private val inlineReplyKeyboard = InlineKeyboardMarkup().apply {
         keyboard = listOf(
             listOf(
-                InlineKeyboardButton().setText("\uD83D\uDD01").setCallbackData("/random_name"),
-                InlineKeyboardButton().setText("\uD83C\uDDEC\uD83C\uDDE7").setCallbackData("/random_name_eng"),
-                InlineKeyboardButton().setText("\uD83C\uDDEB\uD83C\uDDF7").setCallbackData("/random_name_fra"),
-                InlineKeyboardButton().setText("\uD83C\uDDE9\uD83C\uDDEA").setCallbackData("/random_name_ger"),
-                InlineKeyboardButton().setText("\uD83C\uDDEF\uD83C\uDDF5").setCallbackData("/random_name_jap"),
-                InlineKeyboardButton().setText("\uD83C\uDDE8\uD83C\uDDF3").setCallbackData("/random_name_chi"),
-                InlineKeyboardButton().setText("\uD83D\uDDFB").setCallbackData("/random_name_exotic"),
-                InlineKeyboardButton().setText("\uD83D\uDC3A").setCallbackData("/random_name_nickname")
+                InlineKeyboardButton.builder().text("\uD83D\uDD01").callbackData("/random_name").build(),
+                InlineKeyboardButton.builder().text("\uD83C\uDDEC\uD83C\uDDE7").callbackData("/random_name_eng").build(),
+                InlineKeyboardButton.builder().text("\uD83C\uDDEB\uD83C\uDDF7").callbackData("/random_name_fra").build(),
+                InlineKeyboardButton.builder().text("\uD83C\uDDE9\uD83C\uDDEA").callbackData("/random_name_ger").build(),
+                InlineKeyboardButton.builder().text("\uD83C\uDDEF\uD83C\uDDF5").callbackData("/random_name_jap").build(),
+                InlineKeyboardButton.builder().text("\uD83C\uDDE8\uD83C\uDDF3").callbackData("/random_name_chi").build(),
+                InlineKeyboardButton.builder().text("\uD83D\uDDFB").callbackData("/random_name_exotic").build(),
+                InlineKeyboardButton.builder().text("\uD83D\uDC3A").callbackData("/random_name_nickname").build()
             )
         )
     }
@@ -54,10 +54,11 @@ class NameGeneratorHandler(sender: AbsSender) : Handler(sender, "/random_name") 
         }
 
         sender.execute(
-            SendMessage()
-                .setChatId(chatId)
-                .setText(name)
-                .setReplyMarkup(inlineReplyKeyboard)
+            SendMessage.builder()
+                .chatId(chatId.toString())
+                .text(name)
+                .replyMarkup(inlineReplyKeyboard)
+                .build()
         )
     }
 

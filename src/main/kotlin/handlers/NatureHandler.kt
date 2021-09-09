@@ -15,7 +15,7 @@ class NatureHandler(sender: AbsSender) : Handler(sender, "/nature") {
     private val inlineUpdateButton = InlineKeyboardMarkup().apply {
         keyboard = listOf(
             listOf(
-                InlineKeyboardButton().setText("\uD83D\uDD01 Get New!").setCallbackData("/nature_get_new")
+                InlineKeyboardButton.builder().text("\uD83D\uDD01 Get New!").callbackData("/nature_get_new").build()
             )
         )
     }
@@ -29,10 +29,11 @@ class NatureHandler(sender: AbsSender) : Handler(sender, "/nature") {
             val fear = fears.random()
 
             sender.execute(
-                SendMessage()
-                    .setChatId(chatId)
-                    .setText("Натура: $nature\nМаска: $demeanor\nПовадки: $manners\nМотив: $motive\nБоится: $fear")
-                    .setReplyMarkup(inlineUpdateButton)
+                SendMessage.builder()
+                    .chatId(chatId.toString())
+                    .text("Натура: $nature\nМаска: $demeanor\nПовадки: $manners\nМотив: $motive\nБоится: $fear")
+                    .replyMarkup(inlineUpdateButton)
+                    .build()
             )
     }
 }

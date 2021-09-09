@@ -17,10 +17,11 @@ abstract class Handler(
         chatId = callbackQuery.message.chatId
 
         sender.execute(
-            EditMessageReplyMarkup()
-                .setChatId(callbackQuery.message.chatId)
-                .setMessageId(callbackQuery.message.messageId)
-                .setReplyMarkup(InlineKeyboardMarkup())
+            EditMessageReplyMarkup.builder()
+                .chatId(callbackQuery.message.chatId.toString())
+                .messageId(callbackQuery.message.messageId)
+                .replyMarkup(InlineKeyboardMarkup.builder().build())
+                .build()
         )
 
         process(cmd)

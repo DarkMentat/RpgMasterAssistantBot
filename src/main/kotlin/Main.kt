@@ -1,32 +1,27 @@
 package org.darkmentat
 
-import org.telegram.telegrambots.ApiContextInitializer
+import org.apache.log4j.BasicConfigurator
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.bots.TelegramWebhookBot
 import org.telegram.telegrambots.meta.TelegramBotsApi
 import org.telegram.telegrambots.meta.api.interfaces.BotApiObject
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
-import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage
+import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook
+import org.telegram.telegrambots.meta.api.objects.InputFile
 import org.telegram.telegrambots.meta.api.objects.Update
-import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
-import kotlin.random.Random
-import org.telegram.telegrambots.meta.logging.BotLogger
-import java.io.Serializable
-import java.util.logging.Handler
-import java.util.logging.Level
-import java.util.logging.LogRecord
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
+import org.telegram.telegrambots.updatesreceivers.DefaultWebhook
+import java.io.File
 
 
 fun main(args: Array<String>) {
 
-    ApiContextInitializer.init()
+    BasicConfigurator.configure();
 
     val externalUrl = System.getenv("APP_URL")
+    val ip = System.getenv("HOST_IP")
     val internalUrl = "https://0.0.0.0:" + System.getenv("PORT")
+    val keystorePass = System.getenv("KEYSTORE_PASS")
 
     if(externalUrl != null){
         //Using webhooks
@@ -34,14 +29,17 @@ fun main(args: Array<String>) {
         println("external url: $externalUrl")
         println("internal url: $internalUrl")
 
-        val api = TelegramBotsApi(externalUrl, internalUrl)
-
-        api.registerBot(RpgMasterAssistantWebhookBot())
+        val defaultWebhookInstance = DefaultWebhook()
+        defaultWebhookInstance.setInternalUrl(internalUrl)
+        defaultWebhookInstance.setKeyStore("keystore.jks", keystorePass);
+        val api = TelegramBotsApi(DefaultBotSession::class.java, defaultWebhookInstance)
+        val bot = RpgMasterAssistantWebhookBot()
+        api.registerBot(bot, SetWebhook.builder().url(externalUrl).ipAddress(ip).certificate(InputFile(File("public_cert.pem"))).build())
 
     }else{
         //Using long polling
 
-        TelegramBotsApi().registerBot(RpgMasterAssistantLongPollingBot())
+        TelegramBotsApi(DefaultBotSession::class.java).registerBot(RpgMasterAssistantLongPollingBot())
     }
 }
 

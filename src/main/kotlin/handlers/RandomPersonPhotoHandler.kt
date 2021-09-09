@@ -1,6 +1,7 @@
 package org.darkmentat.handlers
 
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto
+import org.telegram.telegrambots.meta.api.objects.InputFile
 import org.telegram.telegrambots.meta.bots.AbsSender
 import kotlin.random.Random
 
@@ -13,9 +14,10 @@ class RandomPersonPhotoHandler(sender: AbsSender) : Handler(sender, "/random_pho
 
         //todo keyboard?
         sender.execute(
-            SendPhoto()
-                .setChatId(chatId)
-                .setPhoto(randomPhotoLink+ Random.nextLong())
+            SendPhoto.builder()
+                .chatId(chatId.toString())
+                .photo(InputFile(randomPhotoLink+ Random.nextLong()))
+                .build()
         )
     }
 }

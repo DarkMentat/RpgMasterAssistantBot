@@ -12,9 +12,10 @@ class PingHandler(sender: AbsSender) : Handler(sender, "/ping") {
 
         //todo keyboard?
         sender.execute(
-            SendMessage()
-                .setChatId(chatId)
-                .setText(pong)
+            SendMessage.builder()
+                .chatId(chatId.toString())
+                .text(pong)
+                .build()
         )
     }
 }

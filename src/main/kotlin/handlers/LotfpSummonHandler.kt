@@ -203,9 +203,10 @@ class LotfpSummonHandler(sender: AbsSender) : Handler(sender, "/lotfp_summon") {
 
         if(formaRandomIndex == 20){
             sender.execute(
-                SendMessage()
-                    .setChatId(chatId)
-                    .setText(forma)
+                SendMessage.builder()
+                    .chatId(chatId.toString())
+                    .text(forma)
+                    .build()
             )
         }else{
             val baseNum = random.nextInt(1, baseDiceSize+1)
@@ -235,9 +236,10 @@ class LotfpSummonHandler(sender: AbsSender) : Handler(sender, "/lotfp_summon") {
             }
 
             sender.execute(
-                SendMessage()
-                    .setChatId(chatId)
-                    .setText("$startStats\n$forma\n$oddmentsText\n$featuresText")
+                SendMessage.builder()
+                    .chatId(chatId.toString())
+                    .text("$startStats\n$forma\n$oddmentsText\n$featuresText")
+                    .build()
             )
         }
     }

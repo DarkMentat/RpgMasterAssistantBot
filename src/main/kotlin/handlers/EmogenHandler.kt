@@ -12,7 +12,7 @@ class EmogenHandler(sender: AbsSender) : Handler(sender, "/emogen") {
     private val inlineUpdateButton = InlineKeyboardMarkup().apply {
         keyboard = listOf(
             listOf(
-                InlineKeyboardButton().setText("\uD83D\uDD01 Get New!").setCallbackData("/emogen_get_new")
+                InlineKeyboardButton.builder().text("\uD83D\uDD01 Get New!").callbackData("/emogen_get_new").build()
             )
         )
     }
@@ -24,10 +24,11 @@ class EmogenHandler(sender: AbsSender) : Handler(sender, "/emogen") {
         val third = emotions.getValue(first).getValue(second).random()
 
         sender.execute(
-            SendMessage()
-                .setChatId(chatId)
-                .setText("$first → $second → $third")
-                .setReplyMarkup(inlineUpdateButton)
+            SendMessage.builder()
+                .chatId(chatId.toString())
+                .text("$first → $second → $third")
+                .replyMarkup(inlineUpdateButton)
+                .build()
         )
     }
 }

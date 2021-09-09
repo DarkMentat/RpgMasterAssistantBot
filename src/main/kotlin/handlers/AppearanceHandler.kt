@@ -18,7 +18,7 @@ class AppearanceHandler(sender: AbsSender): Handler(sender, "/appearance") {
     private val inlineUpdateButton = InlineKeyboardMarkup().apply {
         keyboard = listOf(
             listOf(
-                InlineKeyboardButton().setText("\uD83D\uDD01 Get New!").setCallbackData("/appearance_get_new")
+                InlineKeyboardButton.builder().text("\uD83D\uDD01 Get New!").callbackData("/appearance_get_new").build()
             )
         )
     }
@@ -32,10 +32,11 @@ class AppearanceHandler(sender: AbsSender): Handler(sender, "/appearance") {
         val hair = hair1.random().takeIf { it != "null" }?.plus(" ")?.plus(hair2.random()) ?: "Отсутствуют"
 
         sender.execute(
-            SendMessage()
-            .setChatId(chatId)
-            .setText("Пол: $gender\nОдежда: $clothes\nТело: $body\nЛицо: $face\nГлаза: $eyes\nВолосы: $hair")
-            .setReplyMarkup(inlineUpdateButton)
+            SendMessage.builder()
+            .chatId(chatId.toString())
+            .text("Пол: $gender\nОдежда: $clothes\nТело: $body\nЛицо: $face\nГлаза: $eyes\nВолосы: $hair")
+            .replyMarkup(inlineUpdateButton)
+            .build()
         )
     }
 }

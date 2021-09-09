@@ -9,10 +9,11 @@ class KeyboardHandler(private val keyboardMarkup: ReplyKeyboardMarkup, sender: A
 
     override fun process(msg: String) {
         sender.execute(
-            SendMessage()
-                .setChatId(chatId)
-                .setText("Here is keyboard")
-                .setReplyMarkup(keyboardMarkup)
+            SendMessage.builder()
+                .chatId(chatId.toString())
+                .text("Here is keyboard")
+                .replyMarkup(keyboardMarkup)
+                .build()
         )
     }
 }
