@@ -1,5 +1,6 @@
 package org.darkmentat.handlers
 
+import org.darkmentat.Resources.Tarot.imagesBlackGrimoire
 import org.darkmentat.Resources.Tarot.imagesNewVision
 import org.darkmentat.Resources.Tarot.imagesRaider
 import org.darkmentat.Resources.Tarot.imagesRitualAbuse
@@ -24,7 +25,8 @@ class TarotHandler(sender: AbsSender) : Handler(sender, "/tarot") {
             listOf(
                 InlineKeyboardButton.builder().text("\uD83D\uDD01 New!").callbackData("/tarot_get_new").build(),
                 InlineKeyboardButton.builder().text("\uD83E\uDDD9\u200D♀ Witch!").callbackData("/tarot_get_new_witch").build(),
-                InlineKeyboardButton.builder().text("\uD83D\uDC80 Abuse!").callbackData("/tarot_get_ritual_abuse").build()
+                InlineKeyboardButton.builder().text("\uD83D\uDC80 Abuse!").callbackData("/tarot_get_ritual_abuse").build(),
+                InlineKeyboardButton.builder().text("\uD83E\uDD91 Cthulhu!").callbackData("/tarot_get_black_grimoire").build()
             )
         )
     }
@@ -80,6 +82,15 @@ class TarotHandler(sender: AbsSender) : Handler(sender, "/tarot") {
                 )
             }
 
+            "/tarot_get_black_grimoire" -> {
+                sender.execute(
+                    SendPhoto.builder()
+                        .chatId(chatId.toString())
+                        .photo(InputFile(tarotImageBaseUrl + imagesBlackGrimoire[random.nextInt(imagesBlackGrimoire.size)]))
+                        .replyMarkup(inlineUpdateButton)
+                        .build()
+                )
+            }
             else -> {
                 sender.execute(
                     SendPhoto.builder()
