@@ -24,10 +24,12 @@ class TarotHandler(sender: AbsSender) : Handler(sender, "/tarot") {
         keyboard = listOf(
             listOf(
                 InlineKeyboardButton.builder().text("\uD83D\uDD01 New!").callbackData("/tarot_get_new").build(),
-                InlineKeyboardButton.builder().text("\uD83E\uDDD9\u200D♀ Witch!").callbackData("/tarot_get_new_witch").build(),
+                InlineKeyboardButton.builder().text("\uD83E\uDDD9\u200D♀ Witch!").callbackData("/tarot_get_new_witch").build()
+            ),
+            listOf(
                 InlineKeyboardButton.builder().text("\uD83D\uDC80 Abuse!").callbackData("/tarot_get_ritual_abuse").build(),
                 InlineKeyboardButton.builder().text("\uD83E\uDD91 Cthulhu!").callbackData("/tarot_get_black_grimoire").build()
-            )
+            ),
         )
     }
 
